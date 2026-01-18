@@ -24,8 +24,9 @@ function createWindow() {
     }
   });
 
-//   win.loadFile('http://localhost:5173');
-  win.loadFile('index.html');
+ win.loadURL(app.isPackaged
+    ? `file://${path.join(__dirname, "dist", "index.html")}`
+    : "http://localhost:5173");
 }
 ipcMain.handle('add-patient', (event, data) => {
   const stmt = db.prepare(
@@ -36,9 +37,6 @@ ipcMain.handle('add-patient', (event, data) => {
 
 ipcMain.handle('get-patients', () => {
   return db.prepare('SELECT * FROM patients').all();
-});
-ipcMain.on('greet', (event, name) => {
-  event.reply('greet-reply', `Hello, ${name}! This is Node.js speaking.`);
 });
 
 app.whenReady().then(createWindow);

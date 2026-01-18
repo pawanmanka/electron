@@ -2,7 +2,5 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
   addPatient: (data) => ipcRenderer.invoke('add-patient', data),
-  getPatients: () => ipcRenderer.invoke('get-patients'),
-  send: (channel, data) => ipcRenderer.send(channel, data),
-  receive: (channel, func) => ipcRenderer.on(channel, (event, ...args) => func(...args))
+  getPatients: () => ipcRenderer.invoke('get-patients')
 });
