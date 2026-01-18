@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dr. Parihar's Physiotherapy Clinic</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    input, button {
+      padding: 8px;
+      margin: 5px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Patient Management</h2>
+
+  <div>
+    <input type="text" id="name" placeholder="Name">
+    <input type="number" id="age" placeholder="Age">
+    <input type="text" id="phone" placeholder="Phone">
+    <br>
+    <button onclick="addPatient()">Add Patient</button>
+    <button onclick="loadPatients()">Load Patients</button>
+  </div>
+
+  <!-- Patients Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Phone</th>
+      </tr>
+    </thead>
+    <tbody id="patientsBody">
+      <!-- Rows will be inserted here -->
+    </tbody>
+  </table>
+
+  <script>
+    function addPatient() {
+      if (!window.api) {
+        alert('API not loaded');
+        return;
+      }
+
+      const name = document.getElementById('name').value;
+      const age = document.getElementById('age').value;
+      const phone = document.getElementById('phone').value;
+
+      if (!name || !age || !phone) {
+        alert('Please fill all fields');
+        return;
+      }
+
+      window.api.addPatient({
+        name,
+        age: Number(age),
+        phone
+      });
+
+      document.getElementById('name').value = '';
+      document.getElementById('age').value = '';
+      document.getElementById('phone').value = '';
+
+      loadPatients(); // auto refresh
+    }
+
+    async function loadPatients() {
+      const patients = await window.api.getPatients();
+      const tbody = document.getElementById('patientsBody');
+
+      tbody.innerHTML = ''; // clear table
+
+      patients.forEach(patient => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td>${patient.id}</td>
+          <td>${patient.name}</td>
+          <td>${patient.age}</td>
+          <td>${patient.phone}</td>
+        `;
+
+        tbody.appendChild(row);
+      });
+    }
+
+    // Auto-load on startup
+    loadPatients();
+  </script>
+
+</body>
+</html>
