@@ -37,39 +37,46 @@ export default function App() {
   };
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h2>Patient Management (Electron + SQLite)</h2>
-
-      <div style={{ marginBottom: "20px" }}>
-        <input
+    <div className="container mt-4  align-items-center">
+      <div className="row">
+        <div className="col-sm-12 col-md-4">
+          <input
+          className="form-control mb-1" 
           type="text"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <input
+        </div>
+        <div className="col-sm-12 col-md-4">
+           <input
+          className="form-control mb-1" 
           type="number"
           placeholder="Age"
           value={age}
-          onChange={(e) => setAge(e.target.value)}
-          style={{ marginLeft: "10px" }}
+          onChange={(e) => setAge(e.target.value)}          
         />
-        <input
+        </div>
+        <div className="col-sm-12 col-md-4">
+          <input
+          className="form-control mb-1" 
           type="text"
           placeholder="Phone"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          style={{ marginLeft: "10px" }}
-        />
-        <button onClick={addPatient} style={{ marginLeft: "10px" }}>
+        /> 
+        </div>               
+      </div>
+      <div className="row d-inline">
+        <button onClick={addPatient}  className="btn btn-success btn-sm m-1 w-50">
           Add Patient
         </button>
-        <button onClick={loadPatients} style={{ marginLeft: "10px" }}>
+        <button onClick={loadPatients}  className="btn btn-warning btn-sm m-1 w-50">
           Load Patients
         </button>
       </div>
 
-      <table border="1" cellPadding="10" cellSpacing="0">
+      <table class="table table-striped">
         <thead>
           <tr>
             <th>ID</th>
@@ -79,16 +86,28 @@ export default function App() {
           </tr>
         </thead>
         <tbody>
-          {patients.map((p) => (
-            <tr key={p.id}>
-              <td>{p.id}</td>
-              <td>{p.name}</td>
-              <td>{p.age}</td>
-              <td>{p.phone}</td>
-            </tr>
-          ))}
+          {patients.length > 0 ? (
+              patients.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.id}</td>
+                  <td>{p.name}</td>
+                  <td>{p.age}</td>
+                  <td>{p.phone}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center text-muted">
+                  No patient records found
+                </td>
+              </tr>
+            )}
         </tbody>
       </table>
     </div>
+    // <div style={{ padding: "40px" }}>
+    //   <h2>Patient Management (Electron + SQLite)</h2>
+
+    // </div>
   );
 }

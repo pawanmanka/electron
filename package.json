@@ -1,12 +1,13 @@
 {
-  "name": "electron-demo",
+  "name": "Clinic",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "./electron/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "electron": "electron .",
-    "build": "electron-builder",
+    "build": "npm run vite-build && electron-builder",
     "dev": "vite",
+    "vite-build": "vite build",
     "start": "concurrently \"npm run dev\" \"npm run electron\""
   },
   "build": {
@@ -16,6 +17,11 @@
       "icon": "assets/images/logo.ico",
       "target": "nsis"
     },
+    "files": [
+      "electron/**/*",
+      "dist/**/*",
+      "package.json"
+    ],
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
@@ -23,6 +29,7 @@
       "createStartMenuShortcut": true
     }
   },
+  "asar": false,
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -37,6 +44,7 @@
   },
   "dependencies": {
     "better-sqlite3": "^12.6.2",
+    "bootstrap": "^5.3.8",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   }

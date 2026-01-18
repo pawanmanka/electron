@@ -15,18 +15,27 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: path.join(__dirname, 'assets/images/logo.ico'),
+    icon: path.join(__dirname, '../assets/images/logo.ico'),
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'), // ✅ REQUIRED
       contextIsolation: true,  // ✅ REQUIRED
-      nodeIntegration: false   // ✅ REQUIRED
+      nodeIntegration: false,   // ✅ REQUIRED
+       // 🔑 THESE TWO ARE REQUIRED
+      webSecurity: false,
+      allowRunningInsecureContent: true
     }
   });
-
- win.loadURL(app.isPackaged
-    ? `file://${path.join(__dirname, "dist", "index.html")}`
-    : "http://localhost:5173");
+  const filePath = app.isPackaged
+  ?   path.join('./dist/index.html')
+  : 'http://localhost:5173'
+  console.log('LOADING:', filePath,app.isPackaged)
+  if (app.isPackaged) {
+    win.loadFile(filePath)
+  } else {
+    win.loadURL(filePath);
+    win.webContents.openDevTools();
+  }
 }
 ipcMain.handle('add-patient', (event, data) => {
   const stmt = db.prepare(
